@@ -17,12 +17,12 @@ router.post(
   ],
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: errors.array() });
     }
 
     const { email, password } = req.body;
+
     try {
       const user = await User.findOne({ email });
       if (!user) {
@@ -30,7 +30,6 @@ router.post(
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
-
       if (!isMatch) {
         return res.status(400).json({ message: "Invalid Credentials" });
       }
@@ -51,7 +50,7 @@ router.post(
       res.status(200).json({ userId: user._id });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "SOmething went worng!" });
+      res.status(500).json({ message: "Something went wrong" });
     }
   }
 );
@@ -66,4 +65,5 @@ router.post("/logout", (req: Request, res: Response) => {
   });
   res.send();
 });
+
 export default router;

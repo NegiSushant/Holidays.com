@@ -14,8 +14,7 @@ const Search = () => {
   const [page, setPage] = useState<number>(1);
   const [selectedStars, setSelectedStars] = useState<string[]>([]);
   const [selectedHotelTypes, setSelectedHotelTypes] = useState<string[]>([]);
-  const [selectedFacilities, setSelectFacilities] = useState<string[]>([]);
-
+  const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
   const [selectedPrice, setSelectedPrice] = useState<number | undefined>();
   const [sortOption, setSortOption] = useState<string>("");
 
@@ -55,14 +54,14 @@ const Search = () => {
     setSelectedHotelTypes((prevHotelTypes) =>
       event.target.checked
         ? [...prevHotelTypes, hotelType]
-        : prevHotelTypes.filter((hTypes) => hTypes !== hotelType)
+        : prevHotelTypes.filter((hotel) => hotel !== hotelType)
     );
   };
 
   const handleFacilityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const facility = event.target.value;
 
-    setSelectFacilities((prevFacilities) =>
+    setSelectedFacilities((prevFacilities) =>
       event.target.checked
         ? [...prevFacilities, facility]
         : prevFacilities.filter((prevFacility) => prevFacility !== facility)
@@ -74,7 +73,7 @@ const Search = () => {
       <div className="rounded-lg border border-slate-300 p-5 h-fit sticky top-10">
         <div className="space-y-5">
           <h3 className="text-lg font-semibold border-b border-slate-300 pb-5">
-            Filter By:
+            Filter by:
           </h3>
           <StarRatingFilter
             selectedStars={selectedStars}
@@ -90,14 +89,14 @@ const Search = () => {
           />
           <PriceFilter
             selectedPrice={selectedPrice}
-            onChange={(value) => setSelectedPrice(value)}
+            onChange={(value?: number) => setSelectedPrice(value)}
           />
         </div>
       </div>
       <div className="flex flex-col gap-5">
         <div className="flex justify-between items-center">
-          <span className="text-x1 font-bold">
-            {hotelData?.pagination.total} Hotels Found
+          <span className="text-xl font-bold">
+            {hotelData?.pagination.total} Hotels found
             {search.destination ? ` in ${search.destination}` : ""}
           </span>
           <select
@@ -107,10 +106,9 @@ const Search = () => {
           >
             <option value="">Sort By</option>
             <option value="starRating">Star Rating</option>
-            <option value="pricePerNightASC">
-              Price per Nigth(low to high)
+            <option value="pricePerNightAsc">
+              Price Per Night (low to high)
             </option>
-
             <option value="pricePerNightDesc">
               Price Per Night (high to low)
             </option>
